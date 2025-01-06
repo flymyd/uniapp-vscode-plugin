@@ -31,6 +31,10 @@ export class UniappDebugProcess extends EventEmitter {
     this.logger.info(`Node env: ${JSON.stringify(args.env)}`);
     this.logger.info(`Node args: ${JSON.stringify(args.nodeArgs)}`);
 
+    if(args.uniPlatform === 'app') {
+      this.logger.info("正在处理APP平台特定配置...");
+    }
+
     const script = spawn(
       args.nodePath,
       ["--max-old-space-size=2048", args.nodeJsPath, ...args.nodeArgs],
