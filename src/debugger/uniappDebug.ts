@@ -12,7 +12,7 @@ interface LaunchRequestArguments extends DebugProtocol.LaunchRequestArguments {
   /**
    * 当前项目路径
    */
-  cwd:string;
+  cwd: string;
   /**
    * 目标项目路径
    */
@@ -20,7 +20,7 @@ interface LaunchRequestArguments extends DebugProtocol.LaunchRequestArguments {
   /**
    * 项目名称
    */
-  projectName:string;
+  projectName: string;
   /**
    * 是否压缩
    */
@@ -41,12 +41,12 @@ interface LaunchRequestArguments extends DebugProtocol.LaunchRequestArguments {
 
 export class UniappDebugSession extends DebugSession {
   private _runtime: UniappDebugProcess;
-  private _config:UnappRunConfig
-  constructor(public logger:vscode.LogOutputChannel){
+  private _config: UnappRunConfig
+  constructor(public logger: vscode.LogOutputChannel) {
     super();
     logger.info("uniapp-run debug session start ....")
-    this._config= getUniappConfig()
-    this._runtime=new UniappDebugProcess(this._config,logger);
+    this._config = getUniappConfig()
+    this._runtime = new UniappDebugProcess(this._config, logger);
 
     this._runtime.on("data", (data) => {
       this.sendEvent(new OutputEvent(data));
@@ -123,8 +123,8 @@ export class UniappDebugSession extends DebugSession {
     args: LaunchRequestArguments
   ) {
     logger.setup(args.trace ? Logger.LogLevel.Verbose : Logger.LogLevel.Stop, false);
-    const uniappConfig= getUniappConfig();
-    if(!uniappConfig){
+    const uniappConfig = getUniappConfig();
+    if (!uniappConfig) {
       vscode.window.showErrorMessage('请设置HBuilderX路径');
       this.sendEvent(
         new OutputEvent('请设置HBuilderX路径', 'stderr')
@@ -133,17 +133,27 @@ export class UniappDebugSession extends DebugSession {
       return;
     }
     //启动
-    const _args:runtimeArgs={
-      workPath: args.src||args.cwd,
-      name: args.projectName,
-      platform: args.platform,
-      compress: args.compress||false,
-      uniVueVersion: args.vueVersion||'v2',
-      openDevTools: args.openDevTool||false,
-      production: false
+    try {
+      // 添加app平台特殊处理
+      if (args.platform === 'app') {
+        this.logger.info("检测到APP平台编译...");
+      }
+      //启动
+      const _args: runtimeArgs = {
+        workPath: args.src || args.cwd,
+        name: args.projectName,
+        platform: args.platform,
+        compress: args.compress || false,
+        uniVueVersion: args.vueVersion || 'v2',
+        openDevTools: args.openDevTool || false,
+        production: false
+      }
+      await this._runtime?.start(new UniappRuntimeArgs(_args, uniappConfig));
+      this.sendResponse(response);
+    } catch (error) {
+      this.logger.error(`启动失败: ${error.message}`);
+      this.sendErrorResponse(response, 2, `启动失败: ${error.message}`);
     }
-    await this._runtime?.start(new UniappRuntimeArgs(_args,uniappConfig));
-    this.sendResponse(response);
   }
 
 
