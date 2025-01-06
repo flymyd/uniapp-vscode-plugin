@@ -21,7 +21,7 @@ export interface runtimeArgs {
    */
   name: string;
   /**
-   * 平台,如 `mp-weixin`,`mp-alipay`
+   * 平台,如 `h5`,`mp-weixin`,`mp-alipay`
    */
   platform: string;
   /**

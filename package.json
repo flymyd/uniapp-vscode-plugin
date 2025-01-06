@@ -66,8 +66,9 @@
             "properties": {
               "platform": {
                 "type": "string",
-                "description": "启动模式: mp-weixin,mp-alipay,mp-baidu等",
+                "description": "启动模式: h5,mp-weixin,mp-alipay,mp-baidu等",
                 "enum": [
+                  "h5",
                   "mp-weixin",
                   "mp-alipay",
                   "mp-baidu",
@@ -76,6 +77,7 @@
                   "mp-qq"
                 ],
                 "enumDescriptions": [
+                  "H5",
                   "微信小程序",
                   "支付宝小程序",
                   "百度小程序",
@@ -83,7 +85,7 @@
                   "飞书小程序",
                   "QQ小程序"
                 ],
-                "default": "mp-weixin"
+                "default": "h5"
               },
               "compress": {
                 "type": "boolean",
@@ -125,7 +127,7 @@
             "type": "uniapp-run",
             "request": "launch",
             "name": "Uniapp Run",
-            "platform": "mp-weixin"
+            "platform": "h5"
           }
         ]
       }

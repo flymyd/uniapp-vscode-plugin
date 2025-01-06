@@ -24,14 +24,14 @@
     "type": "uniapp-run",
     "request": "launch",
     "name": "Uniapp Run",
-    "platform": "mp-weixin"
+    "platform": "h5"
 }
 ```
 
 * `type`: 必须是 `uniapp-run`
 * `request`: 必须是: `launch`
 * `name`: 随便填写
-* `platform`: 编译成的平台，与uniapp基本保持一致: `mp-weixin`,`mp-alipay`,`mp-baidu`等
+* `platform`: 编译成的平台，与uniapp基本保持一致: `h5`,`mp-weixin`,`mp-alipay`,`mp-baidu`等
 * `src`: 项目路径，默认当前项目路径
 * `compress`: 是否运行时压缩
 * `openDevTool`: 是否自动打开第三方开发者工具
